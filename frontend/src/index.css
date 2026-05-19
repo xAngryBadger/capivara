@@ -1,0 +1,345 @@
+@import "tailwindcss";
+@import "@fontsource/playfair-display/400.css";
+@import "@fontsource/playfair-display/500.css";
+@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-sage: #456A4B;
+  --color-sage-light: #5a7f5f;
+  --color-sage-dark: #36553c;
+  --color-amber: #a8611a;
+  --color-amber-light: #eab279;
+  --color-amber-dark: #6b4f0a;
+  --color-cream: #fffbe7;
+  --color-cream-50: #fffbe780;
+  --color-offset: #a8a98f;
+  --color-offset-2: #fffdf3;
+  --color-offset-3: #efeae6;
+  --color-beige: #f7d9bb;
+  --color-bright-beige: #eab279;
+  --color-light-green: #eeeccf;
+  --color-bg: #0d1117;
+  --color-bg-alt: #161b22;
+  --color-bg-elevated: #1c2129;
+  --color-border: #30363d;
+  --color-border-subtle: #21262d;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b9481;
+  --color-text-light: #f0f6fc;
+  --color-error: #e22c2c;
+  --color-success: #118850;
+}
+
+:root {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-variant-numeric: tabular-nums;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(3.4rem, 5.2rem, 8rem);
+  letter-spacing: 0.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: clamp(2.3rem, 3.4rem, 5rem);
+  line-height: 1.21;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: clamp(1.75rem, 2rem, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: clamp(1.5rem, 1.75rem, 2.5rem);
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+p {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-sage);
+  color: var(--color-sage);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+@keyframes noise-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(-10px, -5px, 0); }
+  66% { transform: translate3d(5px, 10px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.noise-overlay--animated {
+  animation: noise-shift 0.3s steps(3) infinite;
+}
+
+.btn-clipped {
+  position: relative;
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  cursor: pointer;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.btn-clipped::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-sage);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.btn-clipped::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-sage);
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+  transition: clip-path 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+  z-index: 0;
+}
+
+.btn-clipped:hover::after {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.btn-clipped > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-clipped > .btn-text-back {
+  color: var(--color-text-light);
+  transition: color 0.3s;
+}
+
+.btn-clipped:hover > .btn-text-back {
+  color: var(--color-cream);
+}
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * 0.055em);
+  left: 0;
+  right: 0;
+  height: 0.055em;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: bottom-right;
+  transition: transform 0.2s ease-out;
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom-left;
+}
+
+.section-number {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 300;
+  color: var(--color-amber-light);
+  line-height: 1;
+  opacity: 0.4;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s ease;
+}
+
+.group:hover .section-number {
+  opacity: 1;
+  color: var(--color-amber);
+}
+
+.geometric-bg {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(
+      circle at center,
+      transparent calc(var(--pattern-size, 80px) / 2 - 1px),
+      var(--color-border-subtle) calc(var(--pattern-size, 80px) / 2 - 1px),
+      var(--color-border-subtle) calc(var(--pattern-size, 80px) / 2),
+      transparent calc(var(--pattern-size, 80px) / 2)
+    ),
+    linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+  background-size: var(--pattern-size, 80px) var(--pattern-size, 80px);
+}
+
+.fade-border-top {
+  position: relative;
+}
+
+.fade-border-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent
+  );
+}
+
+.fade-border-bottom {
+  position: relative;
+}
+
+.fade-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent
+  );
+}
+
+.editorial-divider {
+  border-bottom: 1px solid var(--color-border);
+}
+
+@keyframes clip-reveal-up {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes clip-reveal-down {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.clip-reveal-up {
+  animation: clip-reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.clip-reveal-down {
+  animation: clip-reveal-down 0.6s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.counter-animate {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-serif);
+}

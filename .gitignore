@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+*.egg-info/
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+/tmp/

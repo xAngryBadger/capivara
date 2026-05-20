@@ -17,15 +17,10 @@
   --color-sage-dark: #36553c;
   --color-amber: #a8611a;
   --color-amber-light: #eab279;
-  --color-amber-dark: #6b4f0a;
   --color-cream: #fffbe7;
   --color-cream-50: #fffbe780;
   --color-offset: #a8a98f;
-  --color-offset-2: #fffdf3;
-  --color-offset-3: #efeae6;
   --color-beige: #f7d9bb;
-  --color-bright-beige: #eab279;
-  --color-light-green: #eeeccf;
   --color-bg: #0d1117;
   --color-bg-alt: #161b22;
   --color-bg-elevated: #1c2129;
@@ -34,11 +29,17 @@
   --color-text: #e6edf3;
   --color-text-muted: #8b9481;
   --color-text-light: #f0f6fc;
-  --color-error: #e22c2c;
-  --color-success: #118850;
 }
 
 :root {
+  --h1-size: clamp(3.4rem, 5.2rem, 8rem);
+  --h2-size: clamp(2.3rem, 3.4rem, 5rem);
+  --h3-size: clamp(1.75rem, 2rem, 3rem);
+  --h4-size: clamp(1.5rem, 1.75rem, 2.5rem);
+  --eyebrow-size: 1.1rem;
+  --label-mono-size: 0.75rem;
+  --pattern-size: 80px;
+
   font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
@@ -47,6 +48,20 @@
   color: var(--color-text);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 834px) {
+  :root {
+    --pattern-size: 25vw;
+    --eyebrow-size: 1.3rem;
+    --label-mono-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --eyebrow-size: 1.4rem;
+  }
 }
 
 body {
@@ -67,28 +82,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: clamp(3.4rem, 5.2rem, 8rem);
+  font-size: var(--h1-size);
   letter-spacing: 0.2em;
   font-weight: 400;
   text-transform: uppercase;
 }
 
 h2 {
-  font-size: clamp(2.3rem, 3.4rem, 5rem);
+  font-size: var(--h2-size);
   line-height: 1.21;
   letter-spacing: -0.01em;
   font-weight: 400;
 }
 
 h3 {
-  font-size: clamp(1.75rem, 2rem, 3rem);
+  font-size: var(--h3-size);
   line-height: 1.2;
   letter-spacing: -0.01em;
   font-weight: 400;
 }
 
 h4 {
-  font-size: clamp(1.5rem, 1.75rem, 2.5rem);
+  font-size: var(--h4-size);
   line-height: 1.4;
   font-weight: 300;
 }
@@ -101,7 +116,7 @@ p {
 
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 1.1rem;
+  font-size: var(--eyebrow-size);
   line-height: 1.5;
   letter-spacing: 0.1em;
   font-weight: 500;
@@ -110,7 +125,7 @@ p {
 
 .label-mono {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: var(--label-mono-size);
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -122,15 +137,24 @@ p {
 
 ::selection {
   background-color: var(--color-sage);
-  color: var(--color-sage);
+  color: var(--color-cream);
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-subtle);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border);
 }
 
 html.lenis {
@@ -179,14 +203,22 @@ html.lenis {
   cursor: pointer;
   overflow: hidden;
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  background: transparent;
+  border: none;
 }
 
 .btn-clipped::before {
   content: '';
   position: absolute;
   inset: 0;
-  border: 1px solid var(--color-sage);
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  background: no-repeat center/100% 100%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='48'%3E%3Cpath d='M0 0h208l12 12v36H0z' fill='none' stroke='%23456A4B' stroke-width='1'/%3E%3C/svg%3E");
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.btn-clipped:hover::before {
+  opacity: 0.5;
 }
 
 .btn-clipped::after {
@@ -259,14 +291,22 @@ html.lenis {
   background-image:
     radial-gradient(
       circle at center,
-      transparent calc(var(--pattern-size, 80px) / 2 - 1px),
-      var(--color-border-subtle) calc(var(--pattern-size, 80px) / 2 - 1px),
-      var(--color-border-subtle) calc(var(--pattern-size, 80px) / 2),
-      transparent calc(var(--pattern-size, 80px) / 2)
+      transparent calc(var(--pattern-size) / 2 - 1px),
+      var(--color-border) calc(var(--pattern-size) / 2 - 1px),
+      var(--color-border) calc(var(--pattern-size) / 2),
+      transparent calc(var(--pattern-size) / 2)
     ),
     linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
-  background-size: var(--pattern-size, 80px) var(--pattern-size, 80px);
+  background-size: var(--pattern-size) var(--pattern-size);
+}
+
+.geometric-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(13,17,23,0.8));
+  pointer-events: none;
 }
 
 .fade-border-top {

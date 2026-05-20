@@ -1,13 +1,15 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface PreloaderProps {
+  title?: string
   onComplete?: () => void
 }
 
-export function Preloader({ onComplete }: PreloaderProps) {
+export function Preloader({ title = 'Badger Tools', onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
+  const rafIdRef = useRef(0)
 
   const animateSmooth = useCallback(() => {
     let visual = 0
@@ -21,7 +23,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       setProgress(Math.round(visual))
 
       if (visual < 99.5) {
-        requestAnimationFrame(step)
+        rafIdRef.current = requestAnimationFrame(step)
       } else {
         setProgress(100)
         setTimeout(() => {
@@ -56,30 +58,33 @@ export function Preloader({ onComplete }: PreloaderProps) {
       target = 100
     })
 
-    requestAnimationFrame(step)
+    rafIdRef.current = requestAnimationFrame(step)
   }, [onComplete])
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     animateSmooth()
     return () => {
+      cancelAnimationFrame(rafIdRef.current)
       document.body.style.overflow = ''
     }
   }, [animateSmooth])
+
+  const paddedProgress = String(progress).padStart(3, '0')
 
   return (
     <AnimatePresence>
       {!isComplete && (
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ clipPath: 'inset(0 0 100% 0)', opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ clipPath: 'inset(0 0 0 0)' }}
+          exit={{ clipPath: 'inset(0 0 100% 0)' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-bg)]"
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] as [number, number, number, number] }}
             className="text-center mb-12"
           >
             <motion.p
@@ -93,29 +98,28 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+              transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 1, 0.5, 1] as [number, number, number, number] }}
               className="text-4xl md:text-5xl font-serif font-normal tracking-wide text-[var(--color-cream)]"
             >
-              DocX Converter
+              {title}
             </motion.h1>
           </motion.div>
 
           <div className="w-full max-w-xs px-8">
-            <div className="w-full h-[2px] bg-[var(--color-border)] overflow-hidden">
-              <motion.div
-                className="h-full bg-[var(--color-sage)]"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.2, ease: 'linear' }}
-              />
+            <div className="flex items-center gap-4">
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[var(--color-sage)]" />
+              <span className="counter-animate text-2xl font-serif text-[var(--color-cream)] tabular-nums">
+                {paddedProgress}
+              </span>
+              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[var(--color-sage)]" />
             </div>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="label-mono text-[var(--color-text-muted)] mt-3 text-center"
+              className="label-mono text-[var(--color-text-muted)] mt-4 text-center"
             >
-              {progress}%
+              {progress < 100 ? 'Carregando' : 'Pronto'}
             </motion.p>
           </div>
         </motion.div>

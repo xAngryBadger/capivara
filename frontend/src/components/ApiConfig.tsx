@@ -10,6 +10,7 @@ export function ApiConfig({ colabUrl }: ApiConfigProps) {
   const [open, setOpen] = useState(false)
   const [url, setUrl] = useState('')
   const [saved, setSaved] = useState(false)
+  const [connected, setConnected] = useState(hasApiUrl)
 
   useEffect(() => {
     setUrl(getApiUrl())
@@ -17,6 +18,7 @@ export function ApiConfig({ colabUrl }: ApiConfigProps) {
 
   const handleSave = () => {
     setApiUrl(url)
+    setConnected(true)
     setSaved(true)
     setTimeout(() => {
       setSaved(false)
@@ -27,10 +29,11 @@ export function ApiConfig({ colabUrl }: ApiConfigProps) {
   const handleClear = () => {
     setUrl('')
     setApiUrl('')
+    setConnected(false)
     setOpen(false)
   }
 
-  const isConnected = hasApiUrl()
+  const isConnected = connected
 
   return (
     <div className="relative">

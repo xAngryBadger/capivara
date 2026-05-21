@@ -35,7 +35,7 @@ export function BetaBanner({ colabUrl, onDismiss }: BetaBannerProps) {
               <span className="section-number text-[var(--color-accent)] opacity-100 text-2xl select-none" aria-hidden="true">β</span>
               <p className="text-sm text-[var(--color-text)] leading-relaxed min-w-0">
                 <span className="label-mono text-[var(--color-amber-light)] mr-2">BETA</span>
-                Este tool precisa de um backend gratuito no Google Colab.
+                Esta ferramenta precisa de um backend gratuito no Google Colab.
                 <a
                   href={colabUrl}
                   target="_blank"

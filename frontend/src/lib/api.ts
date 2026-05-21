@@ -23,3 +23,7 @@ export function apiUrl(path: string): string {
   }
   return `${base}${path}`
 }
+
+export function apiHeaders(): Record<string, string> {
+  return { 'ngrok-skip-browser-warning': 'true' }
+}

@@ -27,7 +27,6 @@ TEMP_DIR.mkdir(exist_ok=True)
 
 def convert_docx_to_pdf(docx_path: str, output_path: str):
     doc = Document(docx_path)
-    buffer = io.BytesIO()
     doc_pdf = SimpleDocTemplate(output_path, pagesize=A4)
     styles = getSampleStyleSheet()
     story = []
@@ -139,17 +138,25 @@ async def convert_batch(files: list[UploadFile] = File(...)):
         for file in files:
             try:
                 temp_input = TEMP_DIR / f"input_{file.filename}"
-                temp_output = TEMP_DIR / f"output_{file.filename.replace('.docx', '.pdf')}"
-                
+
                 with open(temp_input, "wb") as f:
                     content = await file.read()
                     f.write(content)
-                
+
                 if file.filename.endswith('.docx'):
+                    temp_output = TEMP_DIR / f"output_{file.filename.replace('.docx', '.pdf')}"
                     convert_docx_to_pdf(str(temp_input), str(temp_output))
                 elif file.filename.endswith('.xlsx'):
+                    temp_output = TEMP_DIR / f"output_{file.filename.replace('.xlsx', '.pdf')}"
                     convert_xlsx_to_pdf(str(temp_input), str(temp_output))
-                
+                else:
+                    results.append({
+                        "original": file.filename,
+                        "status": "error",
+                        "error": "Formato não suportado no modo lote. Use DOCX ou XLSX."
+                    })
+                    continue
+
                 results.append({
                     "original": file.filename,
                     "converted": temp_output.name,
@@ -161,7 +168,7 @@ async def convert_batch(files: list[UploadFile] = File(...)):
                     "status": "error",
                     "error": str(e)
                 })
-        
+
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

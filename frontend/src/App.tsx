@@ -5,6 +5,7 @@ import { useLenis } from './hooks/useLenis'
 import { revealVariants, staggerContainer } from './hooks/useScrollReveal'
 import { apiUrl } from './lib/api'
 import { ApiConfig } from './components/ApiConfig'
+import { BetaBanner } from './components/BetaBanner'
 
 type ConvertMode = 'docx-pdf' | 'xlsx-pdf' | 'pdf-compress' | 'batch'
 
@@ -86,9 +87,13 @@ function App() {
         const data = await response.json()
         setResults(data.results)
       }
-    } catch (error) {
+  } catch (error) {
+    if (error instanceof Error && error.message === 'NO_API_URL') {
+      alert('Configure a URL da API primeiro. Clique em "Sem API" no header e cole a URL do ngrok.')
+    } else {
       console.error('Error:', error)
-      setResults([{ original: files[0].name, status: 'error', error: String(error) }])
+      setResults([{ original: files[0].name, status: 'error', error: 'Erro na conversão. Verifique se o backend está online.' }])
+    }
     } finally {
       setConverting(false)
     }
@@ -120,9 +125,10 @@ function App() {
         initial={{ clipPath: 'inset(0 0 100% 0)' }}
         animate={{ clipPath: 'inset(0 0 0 0)' }}
         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]"
+      className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]"
       >
-<header className="fixed top-0 left-0 right-0 z-40 fade-border-bottom h-16 flex items-center" style={{ backdropFilter: 'blur(16px)', backgroundColor: 'rgba(11,15,25,0.8)' }}>
+      <BetaBanner />
+      <header className="fixed top-0 left-0 right-0 z-40 fade-border-bottom h-16 flex items-center" style={{ backdropFilter: 'blur(16px)', backgroundColor: 'rgba(11,15,25,0.8)' }}>
       <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
             <div className="flex items-center gap-3">
               <motion.div

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getApiUrl, setApiUrl } from '../lib/api'
+import { getApiUrl, setApiUrl, hasApiUrl } from '../lib/api'
 
 export function ApiConfig() {
   const [open, setOpen] = useState(false)
@@ -26,7 +26,7 @@ export function ApiConfig() {
     setOpen(false)
   }
 
-  const isConnected = !!getApiUrl()
+  const isConnected = hasApiUrl()
 
   return (
     <div className="relative">

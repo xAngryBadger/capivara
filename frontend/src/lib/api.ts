@@ -4,6 +4,10 @@ export function getApiUrl(): string {
   return localStorage.getItem(STORAGE_KEY) || ''
 }
 
+export function hasApiUrl(): boolean {
+  return !!localStorage.getItem(STORAGE_KEY)
+}
+
 export function setApiUrl(url: string): void {
   if (url) {
     localStorage.setItem(STORAGE_KEY, url.replace(/\/$/, ''))
@@ -14,5 +18,8 @@ export function setApiUrl(url: string): void {
 
 export function apiUrl(path: string): string {
   const base = getApiUrl()
+  if (!base) {
+    throw new Error('NO_API_URL')
+  }
   return `${base}${path}`
 }

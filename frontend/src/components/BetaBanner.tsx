@@ -1,18 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const BANNER_KEY = 'badger-beta-banner-dismissed'
 
 interface BetaBannerProps {
   colabUrl: string
+  onDismiss?: () => void
 }
 
-export function BetaBanner({ colabUrl }: BetaBannerProps) {
+export function BetaBanner({ colabUrl, onDismiss }: BetaBannerProps) {
   const [dismissed, setDismissed] = useState(() => !!localStorage.getItem(BANNER_KEY))
 
   useEffect(() => {
     if (dismissed) localStorage.setItem(BANNER_KEY, '1')
   }, [dismissed])
+
+  const handleDismiss = useCallback(() => {
+    setDismissed(true)
+    onDismiss?.()
+  }, [onDismiss])
 
   return (
     <AnimatePresence>
@@ -41,7 +47,7 @@ export function BetaBanner({ colabUrl }: BetaBannerProps) {
               </p>
             </div>
             <button
-              onClick={() => setDismissed(true)}
+              onClick={handleDismiss}
               className="shrink-0 text-[var(--color-text-muted)] hover:text-[var(--color-cream)] transition-colors"
               aria-label="Fechar"
             >

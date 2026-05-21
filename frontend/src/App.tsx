@@ -4,6 +4,7 @@ import { Preloader } from './components/Preloader'
 import { useLenis } from './hooks/useLenis'
 import { revealVariants, staggerContainer } from './hooks/useScrollReveal'
 import { apiUrl } from './lib/api'
+import { ApiConfig } from './components/ApiConfig'
 
 type ConvertMode = 'docx-pdf' | 'xlsx-pdf' | 'pdf-compress' | 'batch'
 
@@ -138,7 +139,10 @@ function App() {
                 <h1 className="text-lg font-serif font-normal tracking-tight text-[var(--color-cream)]">DocX Converter</h1>
               </div>
             </div>
-            <span className="label-mono text-[var(--color-text-muted)]">DOCX · XLSX · PDF</span>
+            <div className="flex items-center gap-4">
+        <ApiConfig />
+        <span className="label-mono text-[var(--color-text-muted)]">DOCX · XLSX · PDF</span>
+      </div>
           </div>
         </header>
 

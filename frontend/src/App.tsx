@@ -75,7 +75,7 @@ function App() {
       >
         <BetaBanner colabUrl={COLAB_URL} onDismiss={() => setBannerVisible(false)} />
 
-        <header className={`fixed left-0 right-0 z-40 fade-border-bottom h-16 flex items-center transition-top duration-300 ${bannerVisible ? 'top-[44px]' : 'top-0'}`} style={{ backdropFilter: 'blur(16px)', backgroundColor: 'rgba(11,15,25,0.8)' }}>
+        <header className={`fixed left-0 right-0 z-40 fade-border-bottom h-16 flex items-center transition-top duration-300 ${bannerVisible ? 'top-[76px]' : 'top-0'}`} style={{ backdropFilter: 'blur(16px)', backgroundColor: 'rgba(11,15,25,0.8)' }}>
           <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
             <a href="#" className="flex items-center gap-3 no-underline">
               <motion.div
